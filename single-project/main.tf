@@ -27,8 +27,8 @@ resource "google_service_account_key" "monitor_account_key" {
   service_account_id = google_service_account.sa.name
 }
 
-resource "sysdig_monitor_cloud_account_provider" "provider" {
-  platform = "GCP"
+resource "sysdig_monitor_cloud_account" "provider" {
+  cloud_provider = "GCP"
   integration_type = "API"
   account_id = var.gcp_project_id
   additional_options = google_service_account_key.monitor_account_key.private_key
