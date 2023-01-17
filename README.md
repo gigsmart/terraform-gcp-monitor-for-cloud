@@ -1,19 +1,63 @@
-# template-repository
+# Sysdig Monitor GCP Cloud
 
-This repository is used as the default template for Team Cloud Native projects in sysdiglabs.
+Terraform to create appropriate GCP resources and Sysdig Monitor Cloud account for cloud monitoring. Requires the [Sysdig Terraform Provider](https://github.com/sysdiglabs/terraform-provider-sysdig).
 
-Change the README title and contents to fit your project.
 
-## Common requirements
+## Prerequisites
 
-* [ ] *QA*
-* [ ] Devops infra (github repository, quay repository, Jenkins jobs, etc.)
+Your user **must** have following **roles** in your GCP credentials
+* _Owner_
+* _Organization Admin_ (organizational usage only)
 
-## Common project pitfalls
+### Google Cloud CLI Authentication
+To authorize the cloud CLI to be used by Terraform check the following [Terraform Google Provider docs](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/getting_started#configuring-the-provider)
 
-Use this list to verify which of the common pitfalls apply to the project and plan in advance. Usually the following issues appear in most projects:
+## GCP Resource Generation
 
-* [ ] **Support for On-Prem and multi-regions**. URLs should be customizable and acknowledge some differences between default SaaS and other regions / On-Prem, like the /secure prefix for Secure UI.
-* [ ] **Invalid TLS certificates**. Many On-Prem installs have invalid TLS certificates. Provide an option to just ignore the certificate, or a way to inject a custom CA or trusted certificate chain.
-* [ ] **Proxy support**. Many customers have limited connectivity, and their On-Prem installation, or more commonly their SaaS account, must be reached through a proxy. Honor the default *http_proxy*, *no_proxy* environment variables or provide ways to configure proxy support.
-* [ ] **Airgapped environments**. Some customers cannot pull public images from the Internet and rely on internal registries. Provide some way to use the application in this kind of environments (usually allow customizing registry/repository/image in Helm charts, don't hardcode image names, and update instructions on the images that need to be pushed to the internal registry).
+### These Terraform scripts will perform the following steps, which will enable GCP metrics:
+- Create a new service account for the specified project(s) in GCP
+- Add the monitoring.viewer role to the account
+- Generate a service account key for the account
+- Generate a new cloud account record with GCP credentials in Sysdig
+
+
+### Single Project Example
+```
+provider "google" {
+  project = "gcp-project-id" 
+  region = "us-west1" 
+}
+
+provider "sysdig" {
+  sysdig_monitor_url = "https://app.sysdigcloud.com"
+  sysdig_monitor_api_token = "3FB95ACF-0122-4AF9-8723-F05C48B8134F"
+}
+
+module "sysdig_monitor_cloud_account" {
+  source = "github.com/sysdiglabs/terraform-gcp-monitor-for-cloud/single-project"
+  gcp_project_id = "gcp-project-id" 
+}
+```
+
+### Multi-Project
+
+There are 2 options for the variable parent_folder_id:
+
+1. Set it to the direct parent directory of the GCP projects that integrations will be generated for. *This is not a recursive function*, so no integrations will be generated for projects under any of the other folders.
+2. Leave it blank. The script will attempt to generate integrations for every project under the organization.
+
+```
+provider "google" {
+  region = "us-west1" 
+}
+
+provider "sysdig" {
+  sysdig_monitor_url = "https://app.sysdigcloud.com" 
+  sysdig_monitor_api_token = "3FB95ACF-0122-4AF9-8723-F05C48B8134F" 
+}
+
+module "sysdig_monitor_cloud_account" {
+  source = "github.com/sysdiglabs/terraform-gcp-monitor-for-cloud/organization"
+  parent_folder_id = "298047817376 " // (Optional)
+}
+```
