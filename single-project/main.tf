@@ -2,7 +2,8 @@ terraform {
   required_version = ">= 0.12"
   required_providers {
     sysdig = {
-      source = "sysdiglabs/sysdig"
+      source  = "sysdiglabs/sysdig"
+      version = "~>0.5.47"
     }
     google = {
       source  = "hashicorp/google"
