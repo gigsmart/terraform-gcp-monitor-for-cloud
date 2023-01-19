@@ -52,7 +52,7 @@ provider "google" {
 }
 
 provider "sysdig" {
-  sysdig_monitor_url = "https://app.sysdigcloud.com" 
+  sysdig_monitor_url = "https://app.sysdigcloud.com"
   sysdig_monitor_api_token = "3FB95ACF-0122-4AF9-8723-F05C48B8134F"
 }
 

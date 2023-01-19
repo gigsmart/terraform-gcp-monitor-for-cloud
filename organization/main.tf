@@ -2,7 +2,7 @@ terraform {
   required_version = ">= 0.12"
   required_providers {
     sysdig = {
-      source  = "sysdiglabs/sysdig"
+      source = "sysdiglabs/sysdig"
     }
     google = {
       source = "hashicorp/google"
@@ -20,7 +20,7 @@ data "google_projects" "org_projects" {
 }
 
 module "project" {
-  for_each        = toset([for project in data.google_projects.org_projects.projects : project.project_id])
-  source          = "github.com/sysdiglabs/terraform-gcp-monitor-for-cloud/single-project"
-  gcp_project_id  = each.key
+  for_each       = toset([for project in data.google_projects.org_projects.projects : project.project_id])
+  source         = "github.com/sysdiglabs/terraform-gcp-monitor-for-cloud/single-project"
+  gcp_project_id = each.key
 }
