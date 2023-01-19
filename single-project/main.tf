@@ -5,13 +5,10 @@ terraform {
       source = "sysdiglabs/sysdig"
     }
     google = {
-      source = "hashicorp/google"
+      source  = "hashicorp/google"
+      version = "~>4.49.0"
     }
   }
-}
-
-variable "gcp_project_id" {
-  type = string
 }
 
 resource "google_service_account" "sa" {

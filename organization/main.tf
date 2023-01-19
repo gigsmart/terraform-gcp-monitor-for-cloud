@@ -5,14 +5,10 @@ terraform {
       source = "sysdiglabs/sysdig"
     }
     google = {
-      source = "hashicorp/google"
+      source  = "hashicorp/google"
+      version = "~>4.49.0"
     }
   }
-}
-
-variable "parent_folder_id" {
-  type    = string
-  default = ""
 }
 
 data "google_projects" "org_projects" {
