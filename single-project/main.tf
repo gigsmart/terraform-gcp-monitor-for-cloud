@@ -1,12 +1,12 @@
 terraform {
   required_version = ">= 0.12"
   required_providers {
-      sysdig = {
-        source  = "sysdiglabs/sysdig"
-      }
-      google = {
-        source = "hashicorp/google"
-      }
+    sysdig = {
+      source  = "sysdiglabs/sysdig"
+    }
+    google = {
+      source = "hashicorp/google"
+    }
   }
 }
 
@@ -15,8 +15,8 @@ variable "gcp_project_id" {
 }
 
 resource "google_service_account" "sa" {
-  account_id = "sa-sysdigmonitor"
-  display_name = "Sysdig Monitor Service Account"
+  account_id    = "sa-sysdigmonitor"
+  display_name  = "Sysdig Monitor Service Account"
 }
 
 resource "google_project_iam_member" "monitor_account_iam" {
@@ -30,8 +30,8 @@ resource "google_service_account_key" "monitor_account_key" {
 }
 
 resource "sysdig_monitor_cloud_account" "provider" {
-  cloud_provider = "GCP"
-  integration_type = "API"
-  account_id = var.gcp_project_id
-  additional_options = google_service_account_key.monitor_account_key.private_key
+  cloud_provider      = "GCP"
+  integration_type    = "API"
+  account_id          = var.gcp_project_id
+  additional_options  = google_service_account_key.monitor_account_key.private_key
 }

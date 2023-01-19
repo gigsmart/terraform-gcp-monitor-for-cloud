@@ -24,8 +24,8 @@ To authorize the cloud CLI to be used by Terraform check the following [Terrafor
 ### Single Project Example
 ```
 provider "google" {
-  project = "gcp-project-id" 
-  region = "us-west1" 
+  project = "gcp-project-id"
+  region = "us-west1"
 }
 
 provider "sysdig" {
@@ -35,7 +35,7 @@ provider "sysdig" {
 
 module "sysdig_monitor_cloud_account" {
   source = "github.com/sysdiglabs/terraform-gcp-monitor-for-cloud/single-project"
-  gcp_project_id = "gcp-project-id" 
+  gcp_project_id = "gcp-project-id"
 }
 ```
 
@@ -48,12 +48,12 @@ There are 2 options for the variable parent_folder_id:
 
 ```
 provider "google" {
-  region = "us-west1" 
+  region = "us-west1"
 }
 
 provider "sysdig" {
   sysdig_monitor_url = "https://app.sysdigcloud.com" 
-  sysdig_monitor_api_token = "3FB95ACF-0122-4AF9-8723-F05C48B8134F" 
+  sysdig_monitor_api_token = "3FB95ACF-0122-4AF9-8723-F05C48B8134F"
 }
 
 module "sysdig_monitor_cloud_account" {
