@@ -12,7 +12,7 @@ deps:
 		install terrascan "`go env GOPATH`/bin" && \
 		rm terrascan
 
-terraform-init: generate-terraform-providers
+terraform-init:
 	find -name "*.tf" | xargs dirname | uniq | xargs -I% -P0 sh -c 'cd %; terraform init --backend=false' 1>/dev/null
 
 clean:
