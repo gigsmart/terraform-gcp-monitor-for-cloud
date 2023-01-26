@@ -9,11 +9,20 @@ terraform {
       source  = "hashicorp/google"
       version = "~>4.49.0"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "~>3.4.3"
+    }
   }
 }
 
+resource "random_id" "account_id" {
+  prefix      = "sa-sysdigmonitor-"
+  byte_length = 2
+}
+
 resource "google_service_account" "sa" {
-  account_id   = "sa-sysdigmonitor"
+  account_id   = random_id.account_id.dec
   display_name = "Sysdig Monitor Service Account"
 }
 
