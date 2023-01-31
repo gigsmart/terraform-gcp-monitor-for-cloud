@@ -24,6 +24,7 @@ resource "random_id" "account_id" {
 resource "google_service_account" "sa" {
   account_id   = random_id.account_id.dec
   display_name = "Sysdig Monitor Service Account"
+  project      = var.gcp_project_id
 }
 
 resource "google_project_iam_member" "monitor_account_iam" {
