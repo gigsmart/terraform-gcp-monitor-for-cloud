@@ -38,6 +38,11 @@ resource "google_service_account_key" "monitor_account_key" {
 }
 
 resource "sysdig_monitor_cloud_account" "provider" {
+  lifecycle {
+    ignore_changes = [
+      additional_options
+    ]
+  }
   cloud_provider     = "GCP"
   integration_type   = "API"
   account_id         = var.gcp_project_id
